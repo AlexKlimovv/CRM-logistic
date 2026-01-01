@@ -76,10 +76,18 @@ class AuthController
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['organization_id'] = $user['organization_id'];
 
-            header('Location: /');
+            header('Location: /counterparties');
             exit();
         }
 
         require __DIR__.'/../../views/login.php';
+    }
+
+    public function logout()
+    {
+        session_destroy();
+
+        header('Location: /login');
+        exit();
     }
 }
