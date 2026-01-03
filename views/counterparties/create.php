@@ -62,8 +62,9 @@
 
     <div class="form-group">
         <label>Город</label>
-        <input type="text" id="city_search" class="<?= isset($errors['city_id']) ? 'error' : '' ?>" placeholder="Город">
-        <input type="hidden" name="city_id" id="city_id">
+        <input type="text" id="city_search" class="<?= isset($errors['city_id']) ? 'error' : '' ?>"
+               value="<?= htmlspecialchars($data['city_name'] ?? '') ?>" placeholder="Город">
+        <input type="hidden" name="city_id" id="city_id" value="<?= htmlspecialchars($data['city_id'] ?? '') ?>">
     </div>
 
     <button type="submit">Сохранить</button>

@@ -58,15 +58,46 @@ class CounterpartyRepository
      */
     public function getAll(): array
     {
-        $stmt = $this->pdo->query("SELECT id, name, legal_form, edrpou, inn, vat_certificate, legal_address, postal_address, city_id, created_by_user_id 
-                                        FROM counterparties c ORDER BY c.id DESC");
+        $stmt = $this->pdo->query(
+            "SELECT
+            counterparties.id,
+            counterparties.name,
+            counterparties.legal_form,
+            counterparties.edrpou,
+            counterparties.inn,
+            counterparties.vat_certificate,
+            counterparties.legal_address,
+            counterparties.postal_address,
+            
+            cities.name AS city_name,
+            countries.name AS country_name,
+            regions.name AS region_name,
+            
+            users.email AS created_by_email
+FROM counterparties
+LEFT JOIN cities ON cities.id = counterparties.city_id
+    LEFT JOIN regions ON regions.id = cities.region_id
+    LEFT JOIN countries ON countries.id = regions.country_id
+    
+LEFT JOIN users ON users.id = counterparties.created_by_user_id
+ORDER BY  counterparties.id DESC
+");
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getById(int $id): ?array
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM counterparties WHERE id = :id LIMIT 1");
+        $stmt = $this->pdo->prepare("
+SELECT
+        c.*,
+        ci.name AS city_name
+FROM counterparties c
+    LEFT JOIN cities ci ON ci.id = c.city_id
+WHERE c.id = :id
+LIMIT 1
+");
+
         $stmt->execute(['id' => $id]);
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);

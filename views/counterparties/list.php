@@ -22,15 +22,20 @@
         <tr style="cursor: pointer"
             onclick="window.location='/counterparties/edit?id=<?= $c['id'] ?>'">
             <td><?= $c['id'] ?></td>
-            <td><?= htmlspecialchars($c['name'])?> </td>
-            <td><?= htmlspecialchars($c['legal_form'])?> </td>
-            <td><?= htmlspecialchars($c['edrpou'])?> </td>
-            <td><?= htmlspecialchars($c['inn'])?> </td>
-            <td><?= htmlspecialchars($c['vat_certificate'])?> </td>
-            <td><?= htmlspecialchars($c['legal_address'])?> </td>
-            <td><?= htmlspecialchars($c['postal_address'])?> </td>
-            <td><?= $c['city_id']?> </td>
-            <td><?= $c['created_by_user_id']?> </td>
+            <td><?= htmlspecialchars($c['name'])?></td>
+            <td><?= htmlspecialchars($c['legal_form'])?></td>
+            <td><?= htmlspecialchars($c['edrpou'])?></td>
+            <td><?= htmlspecialchars($c['inn'])?></td>
+            <td><?= htmlspecialchars($c['vat_certificate'])?></td>
+            <td><?= htmlspecialchars($c['legal_address'])?></td>
+            <td><?= htmlspecialchars($c['postal_address'])?></td>
+            <td><?= htmlspecialchars(
+                    ($c['city_name'] ?? '-').', '.
+                    ($c['region_name'] ?? '-').', '.
+                    ($c['country_name'] ?? '-')
+                )?>
+            </td>
+            <td><?= $c['created_by_email'] ?? '-'?></td>
         </tr>
     <?php endforeach; ?>
 </table>
