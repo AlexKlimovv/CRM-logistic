@@ -2,7 +2,7 @@
 
 <h1>Контрагенты</h1>
 
-<a href="create.php">Добавить контрагента</a>
+<a href="/counterparties/create">Добавить контрагента</a>
 
 <table border="1" cellpadding="6" cellspacing="0">
     <tr>
