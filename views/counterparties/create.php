@@ -11,7 +11,9 @@
 <link rel="stylesheet" href="/css/style.css">
 
 <form method="post" action="/counterparties/create" novalidate>
-
+    <?php if (!empty($data['id'])): ?>
+        <input type="hidden" name="id" value="<?= $data['id'] ?>">
+    <?php endif; ?>
 
     <div class="form-group">
         <label>Название</label>

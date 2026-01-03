@@ -72,4 +72,30 @@ class CounterpartyRepository
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ?: null;
     }
+
+    public function update(int $id, array $data): void
+    {
+        $sql = "UPDATE counterparties SET 
+                          name = :name,
+                          legal_form = :legal_form,
+                          edrpou = :edrpou,
+                          inn = :inn,
+                          vat_certificate = :vat_certificate,
+                          legal_address = :legal_address,
+                          postal_address = :postal_address,
+                          city_id = :city_id
+                          WHERE id = :id";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'id' => $id,
+            'name' => $data['name'],
+            'legal_form' => $data['legal_form'],
+            'edrpou' => $data['edrpou'],
+            'inn' => $data['inn'],
+            'vat_certificate' => $data['vat_certificate'] ?? null,
+            'legal_address' => $data['legal_address'],
+            'postal_address' => $data['postal_address'],
+            'city_id' => $data['city_id']]);
+    }
 }

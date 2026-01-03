@@ -50,12 +50,17 @@ class CounterpartyController
         }
 
         try {
-            $this->repository->create($data, $_SESSION['user_id']);
+            if (!empty($data['id'])) {
+                $this->repository->update((int)$data['id'], $data);
+            } else {
+                $this->repository->create($data, $_SESSION['user_id']);
+            }
         } catch (Exception $e) {
             $errors['edrpou'] = $e->getMessage();
             $this->showCreateForm($data, $errors);
             return;
         }
+
         header('Location: /counterparties');
         exit();
     }
@@ -66,7 +71,8 @@ class CounterpartyController
         require __DIR__ . '/../../views/counterparties/list.php';
     }
 
-    public function editForm() {
+    public function editForm()
+    {
         $id = $_GET['id'] ?? null;
 
         if (!$id) {
