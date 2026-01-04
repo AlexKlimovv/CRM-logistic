@@ -56,32 +56,42 @@ class CounterpartyRepository
     /**
      * @return PDO
      */
-    public function getAll(): array
+    public function getAll(?string $q = null): array
     {
-        $stmt = $this->pdo->query(
-            "SELECT
-            counterparties.id,
-            counterparties.name,
-            counterparties.legal_form,
-            counterparties.edrpou,
-            counterparties.inn,
-            counterparties.vat_certificate,
-            counterparties.legal_address,
-            counterparties.postal_address,
-            
-            cities.name AS city_name,
-            countries.name AS country_name,
-            regions.name AS region_name,
-            
-            users.email AS created_by_email
-FROM counterparties
-LEFT JOIN cities ON cities.id = counterparties.city_id
-    LEFT JOIN regions ON regions.id = cities.region_id
-    LEFT JOIN countries ON countries.id = regions.country_id
-    
-LEFT JOIN users ON users.id = counterparties.created_by_user_id
-ORDER BY  counterparties.id DESC
-");
+        $sql = "
+                SELECT
+                    counterparties.id,
+                    counterparties.name,
+                    counterparties.legal_form,
+                    counterparties.edrpou,
+                    counterparties.inn,
+                    counterparties.vat_certificate,
+                    counterparties.legal_address,
+                    counterparties.postal_address,
+                    
+                    cities.name AS city_name,
+                    countries.name AS country_name,
+                    regions.name AS region_name,
+                    users.email AS created_by_email
+                
+                FROM counterparties
+                    LEFT JOIN cities ON cities.id = counterparties.city_id
+                    LEFT JOIN regions ON regions.id = cities.region_id
+                    LEFT JOIN countries ON countries.id = regions.country_id
+                    LEFT JOIN users ON users.id = counterparties.created_by_user_id
+                    ";
+
+        $params = [];
+
+        if ($q) {
+            $sql .= " WHERE counterparties.name LIKE :q OR counterparties.edrpou LIKE :q";
+            $params = ['q' => '%' . $q . '%'];
+        }
+
+        $sql .= " ORDER BY counterparties.id DESC";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

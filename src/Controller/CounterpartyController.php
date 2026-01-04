@@ -71,7 +71,10 @@ class CounterpartyController
 
     public function list()
     {
-        $counterparties = $this->repository->getAll();
+        $q = $_GET['q'] ?? null;
+
+        $counterparties = $this->repository->getAll($q);
+
         require __DIR__ . '/../../views/counterparties/list.php';
     }
 

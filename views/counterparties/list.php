@@ -2,6 +2,14 @@
 
 <h1>Контрагенты</h1>
 
+<form method="get" action="/counterparties">
+    <input type="text" name="q"
+           placeholder="Название или ЕДРПОУ"
+           value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
+
+    <button type="submit">Поиск</button>
+</form>
+
 <a href="/counterparties/create">Добавить контрагента</a>
 
 <table border="1" cellpadding="6" cellspacing="0">
