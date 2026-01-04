@@ -33,6 +33,10 @@ class CounterpartyController
             $errors['inn'] = 'ИНН обязателен';
         }
 
+        if (empty($data['vat_certificate'])) {
+            $errors['vat_certificate'] = 'Св-во налогоплательщика обязательно';
+        }
+
         if (empty($data['legal_address'])) {
             $errors['legal_address'] = 'Юр. адрес обязателен';
         }
