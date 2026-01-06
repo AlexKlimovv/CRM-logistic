@@ -11,6 +11,7 @@ require_once __DIR__ . '/../src/Repository/UserRepository.php';
 require_once __DIR__ . '/../src/Repository/CounterpartyRepository.php';
 require_once __DIR__ . '/../src/Controller/AuthController.php';
 require_once __DIR__ . '/../src/Controller/CounterpartyController.php';
+require_once __DIR__ . '/../src/Validator/CounterpartyValidator.php';
 require_once __DIR__ . '/../src/Controller/CityController.php';
 
 $pdo = db();

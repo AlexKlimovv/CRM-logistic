@@ -3,11 +3,9 @@
 class CounterpartyController
 {
     private CounterpartyRepository $repository;
-    private PDO $pdo;
 
     public function __construct(PDO $pdo)
     {
-        $this->pdo = $pdo;
         $this->repository = new CounterpartyRepository($pdo);
     }
 
@@ -18,35 +16,8 @@ class CounterpartyController
 
     public function createCounterparty()
     {
-       $data = $_POST;
-       $errors = [];
-
-        if (empty($data['name'])) {
-            $errors['name'] = 'Название компании обязательно';
-        }
-
-        if (empty($data['edrpou'])) {
-            $errors['edrpou'] = 'ЕДРПОУ обязателен';
-        }
-
-        if (empty($data['inn'])) {
-            $errors['inn'] = 'ИНН обязателен';
-        }
-
-        if (empty($data['vat_certificate'])) {
-            $errors['vat_certificate'] = 'Св-во налогоплательщика обязательно';
-        }
-
-        if (empty($data['legal_address'])) {
-            $errors['legal_address'] = 'Юр. адрес обязателен';
-        }
-
-        if (empty($data['postal_address'])) {
-            $errors['postal_address'] = 'Почтовый адрес обязателен';
-        }
-        if (empty($data['city_id'])) {
-            $errors['city_id'] = 'Город не выбран';
-        }
+        $validator = new CounterpartyValidator();
+        [$data, $errors] = $validator->validate($_POST);
 
         if ($errors) {
             $this->showCreateForm($data, $errors);
@@ -54,11 +25,7 @@ class CounterpartyController
         }
 
         try {
-            if (!empty($data['id'])) {
-                $this->repository->update((int)$data['id'], $data);
-            } else {
-                $this->repository->create($data, $_SESSION['user_id']);
-            }
+            $this->repository->save($data, $_SESSION['user_id']);
         } catch (Exception $e) {
             $errors['edrpou'] = $e->getMessage();
             $this->showCreateForm($data, $errors);

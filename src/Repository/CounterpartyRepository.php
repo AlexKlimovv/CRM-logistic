@@ -139,4 +139,15 @@ LIMIT 1
             'postal_address' => $data['postal_address'],
             'city_id' => $data['city_id']]);
     }
+
+
+    public function save(array $data, int $userId): void
+    {
+        if (!empty($data['id'])) {
+            $this->update($data['id'], $data);
+            return;
+        }
+
+        $this->create($data, $userId);
+    }
 }
